@@ -28,6 +28,7 @@ public class LoginEntity {
 	private String email;
 	private String contact_no;
 	private String account_status;
+
 	private int failed_attempts;
 	private String role;
 
@@ -57,8 +58,6 @@ public class LoginEntity {
 		this.id = id;
 	}
 
-	
-	
 	public String getRole() {
 		return role;
 	}

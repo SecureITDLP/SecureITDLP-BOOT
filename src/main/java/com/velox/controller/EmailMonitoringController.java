@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -20,26 +21,34 @@ public class EmailMonitoringController {
     @Autowired
     private EmailMonitoringService service;
 
-    @GetMapping("/count")
+    @GetMapping("/emailwisecount")
     public ResponseEntity<?> getTotalEmailCount() {
+
         System.out.println("INFO: Received request to fetch total email monitoring count");
+
         try {
-            long count = service.getTotalEmailCount();
-            System.out.println("SUCCESS: Total email monitoring records = " + count);
-            
+
+            List<Object[]> email = service.getTotalEmailCount();
+
+            System.out.println("SUCCESS: Total email monitoring records = " + email);
+
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("totalCount", count);
+            response.put("totalCount", email);
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
+
             System.err.println("ERROR: Failed to fetch email monitoring count - " + e.getMessage());
             e.printStackTrace();
-            
+
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", "Unable to retrieve email count. Please try again later.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errorResponse);
         }
     }
 }

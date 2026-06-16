@@ -22,7 +22,7 @@ public class NetworkDLPController {
 	@Autowired
 	private NetworkDlpService service;
 
-	@GetMapping("/event-counts")
+	@GetMapping("/eventwisecount")
 	public ResponseEntity<List<EventTypeCountDto>> getEventTypeCounts() {
 		List<EventTypeCountDto> counts = service.getEventTypeCounts();
 		return ResponseEntity.ok(counts);

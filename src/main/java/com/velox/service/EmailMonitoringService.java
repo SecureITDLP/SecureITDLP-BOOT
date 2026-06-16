@@ -1,7 +1,12 @@
 package com.velox.service;
 
+import java.util.List;
+
 public interface EmailMonitoringService {
 
-	long getTotalEmailCount();
+
+	
+    List<Object[]> getTotalEmailCount();
+	
 
 }

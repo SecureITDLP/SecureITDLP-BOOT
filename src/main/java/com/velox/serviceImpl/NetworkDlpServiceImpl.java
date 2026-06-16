@@ -3,12 +3,17 @@ package com.velox.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
+import com.velox.dto.LatestIncidentDto;
+import com.velox.dto.PeripheralCountDto;
 import com.velox.repository.NetworkDlpRepository;
 import com.velox.service.NetworkDlpService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 public class NetworkDlpServiceImpl implements NetworkDlpService {
@@ -38,5 +43,16 @@ public class NetworkDlpServiceImpl implements NetworkDlpService {
 			throw new RuntimeException("Failed to retrieve extension counts from database", e);
 		}
 	}
+	
+	 @Override
+	    public List<PeripheralCountDto> getPeripheralCounts() {
+	        // Using the JPQL query that returns DTOs directly
+	        return repository.countPeripheralEventTypes();
+	    }
 
+	 @Override
+	    public List<LatestIncidentDto> getLatestIncidents(int limit) {
+	        Pageable pageable = PageRequest.of(0, limit);
+	        return repository.findLatestIncidents(pageable);
+	    }
 }

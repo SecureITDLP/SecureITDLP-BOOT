@@ -14,26 +14,24 @@ public interface ClipboardControlRepository extends JpaRepository<ClipboardContr
 
 
 	
-	@Query(value = """
-			SELECT 
-			    d.date AS incident_date,
-			    COUNT(c.created_at) AS count
-			FROM (
-			    SELECT CURDATE() - INTERVAL 6 DAY AS date
-			    UNION ALL SELECT CURDATE() - INTERVAL 5 DAY
-			    UNION ALL SELECT CURDATE() - INTERVAL 4 DAY
-			    UNION ALL SELECT CURDATE() - INTERVAL 3 DAY
-			    UNION ALL SELECT CURDATE() - INTERVAL 2 DAY
-			    UNION ALL SELECT CURDATE() - INTERVAL 1 DAY
-			    UNION ALL SELECT CURDATE()
-			) d
-			LEFT JOIN clipboard_control_log c
-			    ON c.created_at >= d.date
-			   AND c.created_at < d.date + INTERVAL 1 DAY
-			GROUP BY d.date
-			ORDER BY d.date
-			""", nativeQuery = true)
-			List<Object[]> getLastSevenDaysIncidents();
+	@Query(value = "SELECT " +
+            "    d.date AS incident_date, " +
+            "    COUNT(c.created_at) AS count " +
+            "FROM ( " +
+            "    SELECT CURDATE() - INTERVAL 6 DAY AS date " +
+            "    UNION ALL SELECT CURDATE() - INTERVAL 5 DAY " +
+            "    UNION ALL SELECT CURDATE() - INTERVAL 4 DAY " +
+            "    UNION ALL SELECT CURDATE() - INTERVAL 3 DAY " +
+            "    UNION ALL SELECT CURDATE() - INTERVAL 2 DAY " +
+            "    UNION ALL SELECT CURDATE() - INTERVAL 1 DAY " +
+            "    UNION ALL SELECT CURDATE() " +
+            ") d " +
+            "LEFT JOIN clipboard_control_log c " +
+            "    ON c.created_at >= d.date " +
+            "   AND c.created_at < d.date + INTERVAL 1 DAY " +
+            "GROUP BY d.date " +
+            "ORDER BY d.date", nativeQuery = true)
+List<Object[]> getLastSevenDaysIncidents();
 
 }
 

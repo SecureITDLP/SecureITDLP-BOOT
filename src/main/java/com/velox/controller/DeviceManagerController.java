@@ -22,12 +22,10 @@ public class DeviceManagerController {
 
 	@GetMapping("/agentStatusCounts")
 	public ResponseEntity<AgentStatusCountDto> getAgentStatusCounts() {
-		System.out.println("DeviceManagerController.getAgentStatusCounts() called");
-
+		
 		try {
 			AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
-			System.out.println("Controller received: active=" + result.getActive() + ", inactive="
-					+ result.getInactive() + ", total=" + result.getTotal());
+			System.out.println("Controller received: active=" + result.getActive() + ", inactive="+ result.getInactive() + ", total=" + result.getTotal());
 
 			if (result.getMessage() != null && !result.getMessage().equals("Success")) {
 				System.err.println("Service error: " + result.getMessage());

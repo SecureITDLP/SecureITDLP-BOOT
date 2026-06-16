@@ -34,37 +34,39 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public LoginEntity authenticateAndGetUser(LoginRequest request) {
-		// Authenticate using AuthenticationManager
-//		authenticationManager
-//				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
 		// Fetch and return user from DB
 		LoginEntity loginEntity = AuthRepository.findByUsername(request.getUsername());
 
 		if (loginEntity == null) {
-			throw new RuntimeException("User not found");
+			throw new RuntimeException("User not exist");
+		}
+		if ("BLOCKED".equals(loginEntity.getAccount_status())) {
+			throw new RuntimeException("Account is blocked. Contact admin.");
 		}
 
+		if (!passwordEncoder.matches(request.getPassword(), loginEntity.getPassword())) {
+
+			int attempts = loginEntity.getFailed_attempts() + 1;
+			loginEntity.setFailed_attempts(attempts);
+
+			if (attempts >= 3) {
+				loginEntity.setAccount_status("BLOCKED");
+				AuthRepository.save(loginEntity);
+				throw new RuntimeException("Account blocked due to too many failed attempts.");
+			}
+
+			AuthRepository.save(loginEntity);
+			throw new RuntimeException("Invalid credentials. " + (3 - attempts) + " attempt(s) remaining.");
+		}
+
+		if (loginEntity.getFailed_attempts() > 0) {
+			loginEntity.setFailed_attempts(0);
+			AuthRepository.save(loginEntity);
+		}
 		return loginEntity;
 	}
 
-//	public Object login(LoginRequest request) {
-//
-//		LoginEntity loginEntity = AuthRepository.findByUsername(request.getUsername());
-//
-//		if (loginEntity == null) {
-//			return new CustomEntityResponse("User not Exist", -1);
-//		}
-//		boolean passwordMatch = passwordEncoder.matches(request.getPassword(), loginEntity.getPassword());
-//
-//		if (!passwordMatch) {
-//			return new CustomEntityResponse("Invalid Password", -1);
-//		}
-//		String token = jwtUtil.generateToken(loginEntity.getUsername());
-//		return Map.of("message", "Login Success", "token", token, "username", loginEntity.getUsername(), "type",
-//				"Bearer");
-//
-//	}
 
 	public Object SignUp(LoginEntity LoginEntity) {
 

@@ -25,10 +25,10 @@ public class DeviceManagerController {
 		
 		try {
 			AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
-			System.out.println("Controller received: active=" + result.getActive() + ", inactive="+ result.getInactive() + ", total=" + result.getTotal());
+//			System.out.println("Controller received: active=" + result.getActive() + ", inactive="+ result.getInactive() + ", total=" + result.getTotal());
 
 			if (result.getMessage() != null && !result.getMessage().equals("Success")) {
-				System.err.println("Service error: " + result.getMessage());
+//				System.err.println("Service error: " + result.getMessage());
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
 			}
 

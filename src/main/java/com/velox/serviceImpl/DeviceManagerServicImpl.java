@@ -21,11 +21,11 @@ public class DeviceManagerServicImpl implements DeviceManager {
 			String activeStatus = "Up";
 			String inactiveStatus = "Down";
 
-			System.out.println("Counting devices with status = '" + activeStatus + "' (case‑insensitive)");
+//			System.out.println("Counting devices with status = '" + activeStatus + "' (case‑insensitive)");
 			long activeCount = repository.countByAgentStatusIgnoreCase(activeStatus);
-			System.out.println("Active count = " + activeCount);
+//			System.out.println("Active count = " + activeCount);
 
-			System.out.println("Counting devices with status = '" + inactiveStatus + "' (case‑insensitive)");
+//			System.out.println("Counting devices with status = '" + inactiveStatus + "' (case‑insensitive)");
 			long inactiveCount = repository.countByAgentStatusIgnoreCase(inactiveStatus);
 			System.out.println("Inactive count = " + inactiveCount);
 

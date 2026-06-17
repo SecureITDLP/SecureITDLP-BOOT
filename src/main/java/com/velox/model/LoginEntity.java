@@ -36,8 +36,7 @@ public class LoginEntity {
 		super();
 	}
 
-	public LoginEntity(Long id, String username, String password, String name, String email, String contact_no,
-			String account_status, int failed_attempts) {
+	public LoginEntity(Long id, String username, String password, String name, String email, String contact_no, String account_status, int failed_attempts) {
 		super();
 		this.id = id;
 		this.username = username;

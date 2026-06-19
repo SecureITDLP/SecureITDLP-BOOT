@@ -15,49 +15,33 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/SecureIT/clipboardcontrol")
+@RequestMapping("/SecureIT/ClipboardControl")
 public class ClipboardControlController {
 
-    @Autowired
-    private ClipboardControlService service;
+	@Autowired
+	private ClipboardControlService service;
 
-    @GetMapping("/7daysclipboard_report")
-    public ResponseEntity<ApiResponse<List<Object[]>>> getTotalClipboardCount() {
+	private static final Logger logger =LoggerFactory.getLogger(AuthController.class);
 
-        System.out.println("INFO: Received request to fetch total clipboard control count");
+	@GetMapping("/7DaysClipboardIncident")
+	public ResponseEntity<ApiResponse<List<Object[]>>> getTotalClipboardCount() {
 
-        try {
-            List<Object[]> clipboardData = service.getTotalClipboardCount();
 
-            System.out.println("SUCCESS: Total clipboard control records = " + clipboardData);
+		try {
+			List<Object[]> clipboardData = service.getTotalClipboardCount();
+			ApiResponse<List<Object[]>> response = new ApiResponse<>(true, "FETCH_SUCCESS","Clipboard count fetched successfully", LocalDateTime.now(), clipboardData);
+			logger.info("7daysclipboard_report fetch Success");
+			return ResponseEntity.ok(response);
 
-            ApiResponse<List<Object[]>> response = new ApiResponse<>(
-                true,
-                "FETCH_SUCCESS",
-                "Clipboard control count fetched successfully",
-                LocalDateTime.now(),
-                clipboardData
-            );
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            System.err.println("ERROR: Failed to fetch clipboard control count - " + e.getMessage());
-            e.printStackTrace();
-
-            ApiResponse<List<Object[]>> errorResponse = new ApiResponse<>(
-                false,
-                "FETCH_FAILED",
-                "Unable to retrieve clipboard control count. Please try again later.",
-                LocalDateTime.now(),
-                null
-            );
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(errorResponse);
-        }
-    }
+		} catch (Exception e) {
+			ApiResponse<List<Object[]>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED","Unable to retrieve clipboard control count", LocalDateTime.now(), null);
+			logger.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
+	}
 }

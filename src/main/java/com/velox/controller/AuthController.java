@@ -33,7 +33,7 @@ public class AuthController {
 	@Autowired
 	private AuthService AuthService;
 
-	 private static final Logger logger =LoggerFactory.getLogger(AuthController.class);
+	 private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 	 
 		@PostMapping("/login")
@@ -59,8 +59,8 @@ public class AuthController {
 				return ResponseEntity.ok(response);
 			}catch(Exception ex) {
 				
-				ApiResponse<LoginResponse> response =new ApiResponse<>( false,"LOGIN_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
-				logger.error("Login Failed");
+				ApiResponse<LoginResponse> response = new ApiResponse<>( false,"LOGIN_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
+				logger.error(ex.getMessage());
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 			}
 			

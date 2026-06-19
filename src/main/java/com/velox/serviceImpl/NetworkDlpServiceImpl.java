@@ -28,7 +28,6 @@ public class NetworkDlpServiceImpl implements NetworkDlpService {
 	@Override
 	public List<ExtensionCountDto> getExtensionCounts() {
 		System.out.println("NetworkDlpServiceImpl.getExtensionCounts() called");
-
 		try {
 			List<ExtensionCountDto> counts = repository.countByExtension();
 			System.out.println("Found " + counts.size() + " extension types");

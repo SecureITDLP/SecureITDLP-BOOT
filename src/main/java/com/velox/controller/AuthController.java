@@ -55,10 +55,12 @@ public class AuthController {
 				loginResponse.setUser(userResponse);
 				
 				ApiResponse<LoginResponse>response = new ApiResponse<>(true,"LOGIN_SUCCESS","Login successful", LocalDateTime.now(),loginResponse);
+				logger.info("Login Success");
 				return ResponseEntity.ok(response);
 			}catch(Exception ex) {
 				
 				ApiResponse<LoginResponse> response =new ApiResponse<>( false,"LOGIN_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
+				logger.error("Login Failed");
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 			}
 			

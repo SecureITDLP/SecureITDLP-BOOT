@@ -25,15 +25,10 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 	List<ExtensionCountDto> countByExtension();
 	
 	 @Query("SELECT new com.velox.dto.PeripheralCountDto(n.eventType, COUNT(n)) " +
-	           "FROM NetworkDlpEntity n " +
-	           "WHERE n.eventType IN ('USB Transfer', 'DVD Burn') " +
-	           "GROUP BY n.eventType")
+	           "FROM NetworkDlpEntity n WHERE n.eventType IN ('USB Transfer', 'DVD Burn') GROUP BY n.eventType")
 	    List<PeripheralCountDto> countPeripheralEventTypes();
 	
-	 @Query("SELECT new com.velox.dto.LatestIncidentDto(" +
-	           "n.ipAddress, n.username, n.eventType, n.fileSourcePath, n.timestamp) " +
-	           "FROM NetworkDlpEntity n " +
-	           "ORDER BY n.timestamp DESC")
+	 @Query("SELECT new com.velox.dto.LatestIncidentDto(n.ipAddress, n.username, n.eventType, n.fileSourcePath, n.timestamp) FROM NetworkDlpEntity n ORDER BY n.timestamp DESC")
 	    List<LatestIncidentDto> findLatestIncidents(org.springframework.data.domain.Pageable pageable);
 
 }

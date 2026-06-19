@@ -29,26 +29,20 @@ public class EmailMonitoringController {
         try {
 
             List<Object[]> email = service.getTotalEmailCount();
-
             System.out.println("SUCCESS: Total email monitoring records = " + email);
-
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("totalCount", email);
-
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
 
             System.err.println("ERROR: Failed to fetch email monitoring count - " + e.getMessage());
             e.printStackTrace();
-
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", "Unable to retrieve email count. Please try again later.");
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }

@@ -3,6 +3,8 @@ package com.velox.controller;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,29 +25,9 @@ public class DeviceManagerController {
 
 	@Autowired
 	private DeviceManager deviceManager;
+	
+	 private static final Logger logger =LoggerFactory.getLogger(AuthController.class);
 
-//	@GetMapping("/agentStatusCounts")
-//	public ResponseEntity<AgentStatusCountDto> getAgentStatusCounts() {
-//		
-//		try {
-//			AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
-////			System.out.println("Controller received: active=" + result.getActive() + ", inactive="+ result.getInactive() + ", total=" + result.getTotal());
-//
-//			if (result.getMessage() != null && !result.getMessage().equals("Success")) {
-////				System.err.println("Service error: " + result.getMessage());
-//				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-//			}
-//
-//			return ResponseEntity.ok(result);
-//
-//		} catch (Exception e) {
-//			System.err.println("Unexpected controller exception: " + e.getMessage());
-//			e.printStackTrace();
-//			AgentStatusCountDto errorResponse = new AgentStatusCountDto();
-//			errorResponse.setMessage("An unexpected error occurred while processing your request");
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-//		}
-//	}
 	
 	@GetMapping("/agentStatusCounts")
 	public ResponseEntity<ApiResponse<AgentStatusCountDto>> getAgentStatusCounts() {
@@ -53,10 +35,12 @@ public class DeviceManagerController {
 		try {
 			AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
 			ApiResponse<AgentStatusCountDto>response = new ApiResponse<>(true,"FETCH_SUCCESS","Device fetch successful", LocalDateTime.now(),result);
+			logger.info("FETCH_SUCCESS");
 			return ResponseEntity.ok(response);
 		}catch(Exception ex) {
-			
-			ApiResponse<AgentStatusCountDto> response =new ApiResponse<>( false,"LOGIN_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
+		
+			ApiResponse<AgentStatusCountDto> response =new ApiResponse<>( false,"FETCH_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
+			logger.error("FETCH_FAILED");
 			return ResponseEntity.status(-1).body(response);
 
 		}

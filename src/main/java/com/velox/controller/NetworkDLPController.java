@@ -4,12 +4,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.velox.dto.AgentStatusCountDto;
 import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
 import com.velox.dto.PeripheralCountDto;
 import com.velox.service.NetworkDlpService;
+import com.velox.utils.ApiResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +29,17 @@ public class NetworkDLPController {
 	@Autowired
 	private NetworkDlpService service;
 
-	@GetMapping("/eventwisecount")
-	public ResponseEntity<List<EventTypeCountDto>> getEventTypeCounts() {
+	@GetMapping("/eventWiseCount")
+	public ResponseEntity<ApiResponse<List<EventTypeCountDto>>> getEventTypeCounts() {
 		List<EventTypeCountDto> counts = service.getEventTypeCounts();
-		return ResponseEntity.ok(counts);
+		
+		ApiResponse<List<EventTypeCountDto>>response = new ApiResponse<>(true,"FETCH_SUCCESS","fetch successful", LocalDateTime.now(),counts);
+		return ResponseEntity.ok(response);
 	}
 
+	
+	
+	
 	@GetMapping("/extensionCounts")
 	public ResponseEntity<List<ExtensionCountDto>> getExtensionCounts() {
 //		System.out.println("NetworkDLPController.getExtensionCounts() called");

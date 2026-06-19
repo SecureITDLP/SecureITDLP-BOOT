@@ -1,5 +1,6 @@
 package com.velox.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
 import com.velox.dto.PeripheralCountDto;
+import com.velox.dto.TimeSlotHostCountDto;
 import com.velox.repository.NetworkDlpRepository;
 import com.velox.service.NetworkDlpService;
 import org.springframework.data.domain.Pageable;
@@ -54,4 +56,22 @@ public class NetworkDlpServiceImpl implements NetworkDlpService {
 	        Pageable pageable = PageRequest.of(0, limit);
 	        return repository.findLatestIncidents(pageable);
 	    }
+	 
+	 @Override
+	 public List<TimeSlotHostCountDto> getTimeSlotWiseUniqueHostCount() {
+
+	     List<Object[]> rows = repository.getTimeSlotWiseUniqueHostCount();
+System.out.println(rows.toString());
+	     List<TimeSlotHostCountDto> result = new ArrayList<>();
+
+	     for (Object[] row : rows) {
+	         result.add(new TimeSlotHostCountDto(
+	                 (String) row[0],                 // timeSlot
+	                 (String) row[1],                 // hostnames
+	                 ((Number) row[2]).longValue()    // uniqueHostCount
+	         ));
+	     }
+
+	     return result;
+	 }
 }

@@ -25,26 +25,28 @@ public class DeviceManagerController {
 
 	@Autowired
 	private DeviceManager deviceManager;
+
 	
 	 private static final Logger logger =LoggerFactory.getLogger(AuthController.class);
 
+
 	
-	@GetMapping("/agentStatusCounts")
-	public ResponseEntity<ApiResponse<AgentStatusCountDto>> getAgentStatusCounts() {
-		
-		try {
-			AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
-			ApiResponse<AgentStatusCountDto>response = new ApiResponse<>(true,"FETCH_SUCCESS","Device fetch successful", LocalDateTime.now(),result);
-			logger.info("FETCH_SUCCESS");
-			return ResponseEntity.ok(response);
-		}catch(Exception ex) {
-		
-			ApiResponse<AgentStatusCountDto> response =new ApiResponse<>( false,"FETCH_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
-			logger.error("FETCH_FAILED");
-			return ResponseEntity.status(-1).body(response);
+	 @GetMapping("/agentStatusCounts")
+		public ResponseEntity<ApiResponse<AgentStatusCountDto>> getAgentStatusCounts() {
+			
+			try {
+				AgentStatusCountDto result = deviceManager.getAgentStatusCounts();
+				ApiResponse<AgentStatusCountDto>response = new ApiResponse<>(true,"FETCH_SUCCESS","Device fetch successful", LocalDateTime.now(),result);
+				logger.info("FETCH_SUCCESS");
+				return ResponseEntity.ok(response);
+			}catch(Exception ex) {
+			
+				ApiResponse<AgentStatusCountDto> response =new ApiResponse<>( false,"FETCH_FAILED", ex.getMessage(), LocalDateTime.now() ,null);
+				logger.error("FETCH_FAILED");
+				return ResponseEntity.status(-1).body(response);
+
+			}
 
 		}
-
-	}
 	
 }

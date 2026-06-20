@@ -31,8 +31,6 @@ public class DeviceManagerController {
 	
 	 private static final Logger logger =LoggerFactory.getLogger(AuthController.class);
 
-
-	
 	 @GetMapping("/agentStatusCounts")
 		public ResponseEntity<ApiResponse<AgentStatusCountDto>> getAgentStatusCounts() {
 			
@@ -59,17 +57,11 @@ public class DeviceManagerController {
 
 				List<DeviceDetailsDto> result = deviceManager.getAllDevices();
 
-				ApiResponse<List<DeviceDetailsDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
-						"All device details fetched successfully", LocalDateTime.now(), result);
-
+				ApiResponse<List<DeviceDetailsDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS","All device details fetched successfully", LocalDateTime.now(), result);
 				logger.info("FETCH_SUCCESS");
-
 				return ResponseEntity.ok(response);
-
 			} catch (Exception ex) {
-
-				ApiResponse<List<DeviceDetailsDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
-						LocalDateTime.now(), null);
+				ApiResponse<List<DeviceDetailsDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),LocalDateTime.now(), null);
 
 				logger.error("FETCH_FAILED", ex);
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

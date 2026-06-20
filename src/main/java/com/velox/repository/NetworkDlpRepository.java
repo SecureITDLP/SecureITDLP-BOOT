@@ -8,6 +8,7 @@ import com.velox.dto.PeripheralCountDto;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
@@ -30,6 +31,9 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 	
 	 @Query("SELECT new com.velox.dto.LatestIncidentDto(n.ipAddress, n.username, n.eventType, n.fileSourcePath, n.timestamp) FROM NetworkDlpEntity n ORDER BY n.timestamp DESC")
 	    List<LatestIncidentDto> findLatestIncidents(org.springframework.data.domain.Pageable pageable);
+	
+	 @Query("SELECT COUNT(n) FROM NetworkDlpEntity n WHERE n.eventType = :eventType")
+	 long countByEventType(@Param("eventType") String eventType);
 
 	 @Query(value = """
 			 SELECT
@@ -48,5 +52,6 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 			 ORDER BY MIN(HOUR(timestamp))
 			 """, nativeQuery = true)
 			 List<Object[]> getTimeSlotWiseUniqueHostCount();}
+
 
 

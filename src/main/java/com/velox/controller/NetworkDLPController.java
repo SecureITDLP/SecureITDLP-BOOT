@@ -9,6 +9,7 @@ import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
 import com.velox.dto.PeripheralCountDto;
 import com.velox.dto.TimeSlotHostCountDto;
+import com.velox.dto.UploadCountDTO;
 import com.velox.service.NetworkDlpService;
 import com.velox.utils.ApiResponse;
 
@@ -87,21 +88,29 @@ public class NetworkDLPController {
 	public ResponseEntity<ApiResponse<List<TimeSlotHostCountDto>>> getTimeSlotHostCounts() {
 
 		try {
-
 			List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
-
 			ApiResponse<List<TimeSlotHostCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
 					"Time slot wise unique host count fetched successfully", LocalDateTime.now(), result);
-
 			return ResponseEntity.ok(response);
-
 		} catch (Exception e) {
 
-			e.printStackTrace();
-
 			ApiResponse<List<TimeSlotHostCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",e.getMessage(), LocalDateTime.now(), null);
-
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 		}
+	}
+	
+	@GetMapping("/getTodaysUploadCount")
+	public ResponseEntity<ApiResponse<List<UploadCountDTO>>>getTodaysUploadCount(){
+		try {
+		List<UploadCountDTO> uploadcount = service.getTodaysUploadCount();
+		ApiResponse<List<UploadCountDTO>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "fetch successful",LocalDateTime.now(), uploadcount);
+		return ResponseEntity.ok(response);
+		
+		}catch(Exception ex) {
+			ApiResponse<List<UploadCountDTO>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",ex.getMessage(), LocalDateTime.now(), null);
+//			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
+		
 	}
 }

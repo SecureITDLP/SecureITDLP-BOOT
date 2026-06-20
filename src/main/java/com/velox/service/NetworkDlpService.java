@@ -7,6 +7,7 @@ import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
 import com.velox.dto.PeripheralCountDto;
 import com.velox.dto.TimeSlotHostCountDto;
+import com.velox.dto.UploadCountDTO;
 
 public interface NetworkDlpService {
 
@@ -20,4 +21,5 @@ public interface NetworkDlpService {
 
 	 List<TimeSlotHostCountDto> getTimeSlotWiseUniqueHostCount();
 
+		List<UploadCountDTO> getTodaysUploadCount();
 }

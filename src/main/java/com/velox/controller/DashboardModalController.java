@@ -1,8 +1,12 @@
 package com.velox.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,23 +17,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.velox.dto.DashboardModalDto;
 import com.velox.dto.ExtensionRequestDto;
+import com.velox.dto.LoginResponse;
 import com.velox.service.DashboardModalService;
 import com.velox.service.NetworkDlpService;
+import com.velox.utils.ApiResponse;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/SecureIT/DashboardModal")
 public class DashboardModalController {
 
-    @Autowired
-    private DashboardModalService dashboardmodalservice;
+	@Autowired
+	private DashboardModalService dashboardmodalservice;
 
-    @PostMapping("/Dashboard/{request}")
-    public ResponseEntity<Object>
-    getDashboardData(@PathVariable String request){
+	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-        return ResponseEntity.ok(
-        		dashboardmodalservice.getDashboardData(request));
-    }
+	@PostMapping("/ExtensionModalData/{request}")
+	public ResponseEntity<ApiResponse<List<DashboardModalDto>>> ExtensionModalData(@PathVariable String request) {
+
+		List<DashboardModalDto> extBasedData = dashboardmodalservice.getDashboardData(request);
+
+		try {
+			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",LocalDateTime.now(), extBasedData);
+			logger.info("ExtensionModalData Fetched");
+			return ResponseEntity.ok(response);
+		} catch (Exception ex) {
+
+			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),LocalDateTime.now(), null);
+			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+		}
+	}
 
 }

@@ -24,41 +24,11 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 			+ "FROM NetworkDlpEntity n GROUP BY n.eventType")
 	List<EventTypeCountDto> countEventsByEventType();
 
-	@Query("SELECT new com.velox.dto.ExtensionCountDto(n.extension, COUNT(n)) " + "FROM NetworkDlpEntity n "
-			+ "WHERE n.extension IS NOT NULL AND n.extension != '' " + "GROUP BY n.extension")
+	@Query("SELECT new com.velox.dto.ExtensionCountDto(n.extension, COUNT(n)) FROM NetworkDlpEntity n WHERE n.extension IS NOT NULL AND n.extension != '' " + "GROUP BY n.extension")
 	List<ExtensionCountDto> countByExtension();
 
-
-//	 @Query(value = """
-//			 SELECT
-//			     CASE
-//			         WHEN HOUR(timestamp) BETWEEN 0 AND 3 THEN '00:00-03:59'
-//			         WHEN HOUR(timestamp) BETWEEN 4 AND 7 THEN '04:00-07:59'
-//			         WHEN HOUR(timestamp) BETWEEN 8 AND 11 THEN '08:00-11:59'
-//			         WHEN HOUR(timestamp) BETWEEN 12 AND 15 THEN '12:00-15:59'
-//			         WHEN HOUR(timestamp) BETWEEN 16 AND 19 THEN '16:00-19:59'
-//			         ELSE '20:00-23:59'
-//			     END,
-//			     GROUP_CONCAT(DISTINCT hostname),
-//			     COUNT(DISTINCT hostname)
-//			 FROM network_dlp
-//			 GROUP BY 1
-//			 ORDER BY MIN(HOUR(timestamp))
-//			 """, nativeQuery = true)
-//			 List<Object[]> getTimeSlotWiseUniqueHostCount();
-//		
-
-			
-
-			     @Query("SELECT new com.velox.dto.DashboardModalDto(" +
-			            "n.branchName, n.username, n.eventType, n.fileSourcePath, n.timestamp) " +
-			            "FROM NetworkDlpEntity n " +
-			            "WHERE n.extension = :extension")
-			     List<DashboardModalDto> findDashboardDataByExtension(
-			             @Param("extension") String extension);
-
-			 		 
-
+	@Query("SELECT new com.velox.dto.DashboardModalDto(n.branchName, n.username, n.eventType, n.fileSourcePath, n.timestamp) FROM NetworkDlpEntity n WHERE n.extension = :extension")
+	List<DashboardModalDto> findDashboardDataByExtension(@Param("extension") String extension);
 
 	@Query("SELECT new com.velox.dto.PeripheralCountDto(n.eventType, COUNT(n)) "
 			+ "FROM NetworkDlpEntity n WHERE n.eventType IN ('USB Transfer', 'DVD Burn') GROUP BY n.eventType")

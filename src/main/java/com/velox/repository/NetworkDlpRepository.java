@@ -1,6 +1,7 @@
 package com.velox.repository;
 
 import com.velox.model.NetworkDlpEntity;
+import com.velox.dto.DashboardModalDto;
 import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
@@ -8,6 +9,7 @@ import com.velox.dto.PeripheralCountDto;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
@@ -47,6 +49,19 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 			 GROUP BY 1
 			 ORDER BY MIN(HOUR(timestamp))
 			 """, nativeQuery = true)
-			 List<Object[]> getTimeSlotWiseUniqueHostCount();}
+			 List<Object[]> getTimeSlotWiseUniqueHostCount();
+		
+
+			
+
+			     @Query("SELECT new com.velox.dto.DashboardModalDto(" +
+			            "n.branchName, n.username, n.eventType, n.fileSourcePath, n.timestamp) " +
+			            "FROM NetworkDlpEntity n " +
+			            "WHERE n.extension = :extension")
+			     List<DashboardModalDto> findDashboardDataByExtension(
+			             @Param("extension") String extension);
+
+			 }			 
+
 
 

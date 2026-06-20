@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
+import com.velox.dto.NetworkDlpRequestDto;
 import com.velox.dto.PeripheralCountDto;
 import com.velox.dto.TimeSlotHostCountDto;
 import com.velox.repository.NetworkDlpRepository;
@@ -74,4 +75,14 @@ System.out.println(rows.toString());
 
 	     return result;
 	 }
+
+	@Override
+	public Object getDashboardData(String extension) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+	
 }

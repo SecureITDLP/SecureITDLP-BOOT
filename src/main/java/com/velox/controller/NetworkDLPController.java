@@ -31,118 +31,78 @@ public class NetworkDLPController {
 	@GetMapping("/eventWiseCount")
 	public ResponseEntity<ApiResponse<List<EventTypeCountDto>>> getEventTypeCounts() {
 		List<EventTypeCountDto> counts = service.getEventTypeCounts();
-		
-		ApiResponse<List<EventTypeCountDto>>response = new ApiResponse<>(true,"FETCH_SUCCESS","fetch successful", LocalDateTime.now(),counts);
+
+		ApiResponse<List<EventTypeCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "fetch successful",
+				LocalDateTime.now(), counts);
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/extensionCounts")
 	public ResponseEntity<ApiResponse<List<ExtensionCountDto>>> getExtensionCounts() {
-	    try {
-	        List<ExtensionCountDto> result = service.getExtensionCounts();
-	        ApiResponse<List<ExtensionCountDto>> response = new ApiResponse<>(
-	            true,
-	            "FETCH_SUCCESS",
-	            "Extension counts fetched successfully",
-	            LocalDateTime.now(),
-	            result
-	        );
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        ApiResponse<List<ExtensionCountDto>> errorResponse = new ApiResponse<>(
-	            false,
-	            "FETCH_FAILED",
-	            "Unable to retrieve extension counts. Please try again later.",
-	            LocalDateTime.now(),
-	            null
-	        );
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-	    }
+		try {
+			List<ExtensionCountDto> result = service.getExtensionCounts();
+			ApiResponse<List<ExtensionCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
+					"Extension counts fetched successfully", LocalDateTime.now(), result);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ApiResponse<List<ExtensionCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					"Unable to retrieve extension counts. Please try again later.", LocalDateTime.now(), null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
 	}
 
 	@GetMapping("/peripheralCounts")
 	public ResponseEntity<ApiResponse<List<PeripheralCountDto>>> getPeripheralCounts() {
-	    try {
-	        List<PeripheralCountDto> result = service.getPeripheralCounts();
-	        ApiResponse<List<PeripheralCountDto>> response = new ApiResponse<>(
-	            true,
-	            "FETCH_SUCCESS",
-	            "Peripheral counts fetched successfully",
-	            LocalDateTime.now(),
-	            result
-	        );
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        ApiResponse<List<PeripheralCountDto>> errorResponse = new ApiResponse<>(
-	            false,
-	            "FETCH_FAILED",
-	            "Unable to retrieve peripheral counts. Please try again later.",
-	            LocalDateTime.now(),
-	            null
-	        );
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-	    }
+		try {
+			List<PeripheralCountDto> result = service.getPeripheralCounts();
+			ApiResponse<List<PeripheralCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
+					"Peripheral counts fetched successfully", LocalDateTime.now(), result);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ApiResponse<List<PeripheralCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					"Unable to retrieve peripheral counts. Please try again later.", LocalDateTime.now(), null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
 	}
 
 	@GetMapping("/latest-incidents")
 	public ResponseEntity<ApiResponse<List<LatestIncidentDto>>> getLatestIncidents(
-	        @RequestParam(value = "limit", defaultValue = "50") int limit) {
-	    try {
-	        List<LatestIncidentDto> result = service.getLatestIncidents(limit);
-	        ApiResponse<List<LatestIncidentDto>> response = new ApiResponse<>(
-	            true,
-	            "FETCH_SUCCESS",
-	            "Latest incidents fetched successfully",
-	            LocalDateTime.now(),
-	            result
-	        );
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        ApiResponse<List<LatestIncidentDto>> errorResponse = new ApiResponse<>(
-	            false,
-	            "FETCH_FAILED",
-	            "Unable to retrieve latest incidents. Please try again later.",
-	            LocalDateTime.now(),
-	            null
-	        );
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-	    }
+			@RequestParam(value = "limit", defaultValue = "50") int limit) {
+		try {
+			List<LatestIncidentDto> result = service.getLatestIncidents(limit);
+			ApiResponse<List<LatestIncidentDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
+					"Latest incidents fetched successfully", LocalDateTime.now(), result);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ApiResponse<List<LatestIncidentDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					"Unable to retrieve latest incidents. Please try again later.", LocalDateTime.now(), null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
 	}
-	
+
 	@GetMapping("/timeSlotHostCounts")
 	public ResponseEntity<ApiResponse<List<TimeSlotHostCountDto>>> getTimeSlotHostCounts() {
 
-	    try {	
+		try {
 
-	        List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
+			List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
 
-	        ApiResponse<List<TimeSlotHostCountDto>> response =
-	                new ApiResponse<>(
-	                        true,
-	                        "FETCH_SUCCESS",
-	                        "Time slot wise unique host count fetched successfully",
-	                        LocalDateTime.now(),
-	                        result);
+			ApiResponse<List<TimeSlotHostCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
+					"Time slot wise unique host count fetched successfully", LocalDateTime.now(), result);
 
-	        return ResponseEntity.ok(response);
+			return ResponseEntity.ok(response);
 
-	    } catch (Exception e) {
+		} catch (Exception e) {
 
-	        e.printStackTrace();
+			e.printStackTrace();
 
-	        ApiResponse<List<TimeSlotHostCountDto>> errorResponse =
-	                new ApiResponse<>(
-	                        false,
-	                        "FETCH_FAILED",
-	                        e.getMessage(),
-	                        LocalDateTime.now(),
-	                        null);
+			ApiResponse<List<TimeSlotHostCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					e.getMessage(), LocalDateTime.now(), null);
 
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body(errorResponse);
-	    }
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
 	}
 }

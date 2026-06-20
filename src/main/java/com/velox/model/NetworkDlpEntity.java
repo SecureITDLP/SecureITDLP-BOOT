@@ -1,7 +1,10 @@
 package com.velox.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "network_dlp")
@@ -47,8 +50,8 @@ public class NetworkDlpEntity {
     private String applicationName;
 
     @Column(name = "timestamp", insertable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;    // Maps to TIMESTAMP, uses DB default CURRENT_TIMESTAMP
+    @CreationTimestamp
+    private LocalDateTime timestamp;    // Maps to TIMESTAMP, uses DB default CURRENT_TIMESTAMP
 
     @Column(name = "keyword", length = 1000)
     private String keyword;
@@ -101,8 +104,8 @@ public class NetworkDlpEntity {
     public String getApplicationName() { return applicationName; }
     public void setApplicationName(String applicationName) { this.applicationName = applicationName; }
 
-    public Date getTimestamp() { return timestamp; }
-    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
+    public LocalDateTime getTimestamp() { return timestamp; }
+    public void setTimestamp(LocalDateTime localDateTime) { this.timestamp = localDateTime; }
 
     public String getKeyword() { return keyword; }
     public void setKeyword(String keyword) { this.keyword = keyword; }

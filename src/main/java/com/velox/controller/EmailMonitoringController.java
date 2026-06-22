@@ -2,7 +2,6 @@ package com.velox.controller;
 
 import com.velox.service.EmailMonitoringService;
 import com.velox.utils.ApiResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,43 +20,32 @@ import java.util.Map;
 @RequestMapping("/SecureIT/email-monitoring")
 public class EmailMonitoringController {
 
-    @Autowired
-    private EmailMonitoringService service;
+	@Autowired
+	private EmailMonitoringService service;
 
-    @GetMapping("/emailwisecount")
-    public ResponseEntity<ApiResponse<List<Object[]>>> getTotalEmailCount() {
+	@GetMapping("/emailwisecount")
+	public ResponseEntity<ApiResponse<List<Object[]>>> getTotalEmailCount() {
 
-        System.out.println("INFO: Received request to fetch total email monitoring count");
+		System.out.println("INFO: Received request to fetch total email monitoring count");
 
-        try {
-            List<Object[]> emailData = service.getTotalEmailCount();
+		try {
+			List<Object[]> emailData = service.getTotalEmailCount();
 
-            System.out.println("SUCCESS: Total email monitoring records = " + emailData);
+			System.out.println("SUCCESS: Total email monitoring records = " + emailData);
 
-            ApiResponse<List<Object[]>> response = new ApiResponse<>(
-                true,
-                "FETCH_SUCCESS",
-                "Email monitoring count fetched successfully",
-                LocalDateTime.now(),
-                emailData
-            );
+			ApiResponse<List<Object[]>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
+					"Email monitoring count fetched successfully", LocalDateTime.now(), emailData);
 
-            return ResponseEntity.ok(response);
+			return ResponseEntity.ok(response);
 
-        } catch (Exception e) {
-            System.err.println("ERROR: Failed to fetch email monitoring count - " + e.getMessage());
-            e.printStackTrace();
+		} catch (Exception e) {
+			System.err.println("ERROR: Failed to fetch email monitoring count - " + e.getMessage());
+			e.printStackTrace();
 
-            ApiResponse<List<Object[]>> errorResponse = new ApiResponse<>(
-                false,
-                "FETCH_FAILED",
-                "Unable to retrieve email count. Please try again later.",
-                LocalDateTime.now(),
-                null
-            );
+			ApiResponse<List<Object[]>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					"Unable to retrieve email count. Please try again later.", LocalDateTime.now(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(errorResponse);
-        }
-    }
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
+	}
 }

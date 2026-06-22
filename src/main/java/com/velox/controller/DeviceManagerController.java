@@ -54,9 +54,7 @@ public class DeviceManagerController {
 		public ResponseEntity<ApiResponse<List<DeviceDetailsDto>>> getAllDevices() {
 
 			try {
-
 				List<DeviceDetailsDto> result = deviceManager.getAllDevices();
-
 				ApiResponse<List<DeviceDetailsDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS","All device details fetched successfully", LocalDateTime.now(), result);
 				logger.info("FETCH_SUCCESS");
 				return ResponseEntity.ok(response);

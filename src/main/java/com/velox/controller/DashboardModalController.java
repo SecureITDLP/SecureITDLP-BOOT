@@ -36,7 +36,6 @@ public class DashboardModalController {
 	public ResponseEntity<ApiResponse<List<DashboardModalDto>>> ExtensionModalData(@PathVariable String request) {
 
 		List<DashboardModalDto> extBasedData = dashboardmodalservice.getDashboardData(request);
-
 		try {
 			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",LocalDateTime.now(), extBasedData);
 			logger.info("ExtensionModalData Fetched");

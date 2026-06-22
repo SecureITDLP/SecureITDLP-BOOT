@@ -7,5 +7,6 @@ import com.velox.dto.EmailModalDto;
 
 public interface EmailMonitoringService {
 
-	public List<EmailModalDto> getEmailData(LocalDate date);
+//	public List<EmailModalDto> getTotalEmailCount( );
+	List<Object[]> getTotalEmailCount ();
 }

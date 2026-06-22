@@ -1,6 +1,7 @@
 package com.velox.controller;
 
 import com.velox.service.PrinterDLPService;
+import com.velox.utils.ApiResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,26 +26,36 @@ public class PrinterDLPController {
 	
     
     @GetMapping("/printerIncidentcount")
-    public ResponseEntity<?> getPrinterDetails() {
-
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getPrinterDetails() {
         try {
-
             Long totalCount = service.getTotalPrinterLogs();
             String peakDay = service.getPeakDayIncident();
-            logger.info("Peak Day", peakDay);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("totalCount", totalCount);
-            response.put("peakDay", peakDay);
+            // Fix logger: use placeholder
+            logger.info("Peak Day: {}", peakDay);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("totalCount", totalCount);
+            data.put("peakDay", peakDay);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>(
+                true,
+                "FETCH_SUCCESS",
+                "Printer incident details fetched successfully",
+                LocalDateTime.now(),
+                data
+            );
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
-
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("status", "error");
-            errorResponse.put("message", "Unable to retrieve printer details. Please try again later.");
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) .body(errorResponse);
+            logger.error("Error fetching printer incident details", e);
+            ApiResponse<Map<String, Object>> errorResponse = new ApiResponse<>(
+                false,
+                "FETCH_FAILED",
+                "Unable to retrieve printer details. Please try again later.",
+                LocalDateTime.now(),
+                null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }

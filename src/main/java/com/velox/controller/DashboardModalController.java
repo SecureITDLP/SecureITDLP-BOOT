@@ -1,11 +1,13 @@
 package com.velox.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.velox.dto.DashboardModalDto;
+import com.velox.dto.EmailModalDto;
 import com.velox.dto.ExtensionRequestDto;
 import com.velox.dto.LoginResponse;
 import com.velox.service.DashboardModalService;
@@ -37,12 +40,32 @@ public class DashboardModalController {
 
 		List<DashboardModalDto> extBasedData = dashboardmodalservice.getDashboardData(request);
 		try {
-			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",LocalDateTime.now(), extBasedData);
+			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), extBasedData);
 			logger.info("ExtensionModalData Fetched");
 			return ResponseEntity.ok(response);
 		} catch (Exception ex) {
 
-			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),LocalDateTime.now(), null);
+			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+					LocalDateTime.now(), null);
+			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+		}
+	}
+
+	@PostMapping("/EmailModalData/{date}")
+	public ResponseEntity<ApiResponse<List<EmailModalDto>>> EmailModalData(@PathVariable String date) {
+		List<EmailModalDto> dateBasedData = dashboardmodalservice.getEmailData(date);
+
+		try {
+			ApiResponse<List<EmailModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), dateBasedData);
+			logger.info("EmailModalData Fetched");
+			return ResponseEntity.ok(response);
+
+		} catch (Exception ex) {
+			ApiResponse<List<EmailModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+					LocalDateTime.now(), null);
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 		}

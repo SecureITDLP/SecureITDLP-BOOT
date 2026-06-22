@@ -1,5 +1,7 @@
 package com.velox.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
 @Entity
@@ -23,7 +25,7 @@ public class EmailMonitoringEntity {
     @Column(name = "body", columnDefinition = "TEXT")
     private String body;
 
-    @Column(name = "date_time", length = 200)
+    @Column(name="date_time")
     private String dateTime;
 
     @Column(name = "time", length = 100)
@@ -43,6 +45,8 @@ public class EmailMonitoringEntity {
 
     @Column(name = "user_name")
     private String userName;
+    
+  
 
     @Column(name = "C_DATE", length = 255)
     private String cDate;      // column name C_DATE

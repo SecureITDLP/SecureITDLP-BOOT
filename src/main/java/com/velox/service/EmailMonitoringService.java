@@ -1,12 +1,11 @@
 package com.velox.service;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import com.velox.dto.EmailModalDto;
 
 public interface EmailMonitoringService {
 
-
-	
-    List<Object[]> getTotalEmailCount();
-	
-
+	public List<EmailModalDto> getEmailData(LocalDate date);
 }

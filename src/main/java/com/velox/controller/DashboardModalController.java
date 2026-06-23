@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.velox.dto.ClipboardModalDto;
 import com.velox.dto.DashboardModalDto;
 import com.velox.dto.EmailModalDto;
 import com.velox.dto.ExtensionRequestDto;
@@ -39,6 +40,7 @@ public class DashboardModalController {
 	public ResponseEntity<ApiResponse<List<DashboardModalDto>>> ExtensionModalData(@PathVariable String request) {
 
 		List<DashboardModalDto> extBasedData = dashboardmodalservice.getDashboardData(request);
+
 		try {
 			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
 					LocalDateTime.now(), extBasedData);
@@ -70,5 +72,50 @@ public class DashboardModalController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 		}
 	}
+	
+	@PostMapping("/ClipboardModalData/{Date}")
+	public ResponseEntity<ApiResponse<List<ClipboardModalDto>>> ClipboardModalData(@PathVariable String Date){
+		List<ClipboardModalDto> dateBasedData = dashboardmodalservice.getClipboarddata(Date);
+		
+		try {
+			ApiResponse<List<ClipboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), dateBasedData);
+			logger.info("ClipboardModalData Fetched");
+			return ResponseEntity.ok(response);
+		}
+		
+		 catch (Exception ex) {
+				ApiResponse<List<ClipboardModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+						LocalDateTime.now(), null);
+				logger.error(ex.getMessage());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+			}
+
+	}
+	
+	@PostMapping("/IncidentbyChannelModal/{Channel}")
+	
+	public ResponseEntity<ApiResponse<List<?>>> IncidentbyChannelModal(@PathVariable String Channel){
+		List<?> dateBasedData = dashboardmodalservice.getIncidentbyChannel(Channel);
+		
+		try {
+			ApiResponse<List<?>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), dateBasedData);
+			logger.info("IncidentbyChannelModalData Fetched");
+			return ResponseEntity.ok(response);
+		}
+		
+		 catch (Exception ex) {
+				ApiResponse<List<?>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+						LocalDateTime.now(), null);
+				logger.error(ex.getMessage());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+			}
+		
+		
+
+	}
+	
+	
 
 }

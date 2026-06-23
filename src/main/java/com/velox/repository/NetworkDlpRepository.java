@@ -60,5 +60,31 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 
 	@Query(value = "SELECT event_type as eventType, COUNT(event_type) as count FROM network_dlp WHERE DATE(timestamp) = DATE(:date) GROUP BY event_type", nativeQuery = true)
 	List<UploadCountDTO> getUploadCountByDate(@Param("date") LocalDate date);
+	
+	@Query(value = """
+	        SELECT branchname,
+	               event_type,
+	               hostname,
+	               username,
+	               timestamp
+	        FROM network_dlp WHERE event_type='NETWORK UPLOAD' 
+	        ORDER BY `timestamp` DESC
+	        """, nativeQuery = true)
+	List<Object[]> getNetworkincidentchannel();
+	
+	
+	@Query(value = """
+		    SELECT branchname,
+		           event_type,
+		           hostname,
+		           username,
+		           timestamp
+		    FROM network_dlp
+		    WHERE event_type IN ('DVD BURN', 'USB TRANSFER')
+		    ORDER BY `timestamp` DESC
+		    """, nativeQuery = true)
+		List<Object[]> getNetworkincidentchannel1();
+	
+	
 
 }

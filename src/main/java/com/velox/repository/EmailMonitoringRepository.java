@@ -42,4 +42,25 @@ public interface EmailMonitoringRepository extends JpaRepository<EmailMonitoring
 			       "WHERE e.dateTime = :date")
 			List<EmailModalDto> getEmailData(@Param("date") String date);
 
+//
+//
+		@Query(value = """
+		        SELECT sender,
+		               receiver,
+		               host_name,
+		               attachments,
+		               subject,
+		               date_time
+		        FROM email_monittoring
+		        """, nativeQuery = true)
+		List<Object[]> emailincident();
+
 }
+
+
+	
+
+		
+
+
+

@@ -5,6 +5,7 @@ import com.velox.dto.DashboardModalDto;
 import com.velox.dto.EventTypeCountDto;
 import com.velox.dto.ExtensionCountDto;
 import com.velox.dto.LatestIncidentDto;
+import com.velox.dto.NetworkDlpRequestDto;
 import com.velox.dto.PeripheralCountDto;
 import com.velox.dto.UploadCountDTO;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Long> {
@@ -42,21 +44,36 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 
 	@Query(value = """
 			SELECT
-			    CASE
-			        WHEN HOUR(timestamp) BETWEEN 0 AND 3 THEN '00:00-03:59'
-			        WHEN HOUR(timestamp) BETWEEN 4 AND 7 THEN '04:00-07:59'
-			        WHEN HOUR(timestamp) BETWEEN 8 AND 11 THEN '08:00-11:59'
-			        WHEN HOUR(timestamp) BETWEEN 12 AND 15 THEN '12:00-15:59'
-			        WHEN HOUR(timestamp) BETWEEN 16 AND 19 THEN '16:00-19:59'
-			        ELSE '20:00-23:59'
-			    END,
-			    GROUP_CONCAT(DISTINCT hostname),
-			    COUNT(DISTINCT hostname)
-			FROM network_dlp
-			GROUP BY 1
-			ORDER BY MIN(HOUR(timestamp))
+			    ts.timeSlot,
+			    GROUP_CONCAT(DISTINCT n.hostname) AS hostnames,
+			    COUNT(DISTINCT n.hostname) AS uniqueHostCount
+			FROM
+			(
+			    SELECT '00:00-03:59' AS timeSlot, 0 AS slotOrder
+			    UNION ALL
+			    SELECT '04:00-07:59', 1
+			    UNION ALL
+			    SELECT '08:00-11:59', 2
+			    UNION ALL
+			    SELECT '12:00-15:59', 3
+			    UNION ALL
+			    SELECT '16:00-19:59', 4
+			    UNION ALL
+			    SELECT '20:00-23:59', 5
+			) ts
+			LEFT JOIN network_dlp n
+			ON (
+			    (ts.slotOrder = 0 AND HOUR(n.timestamp) BETWEEN 0 AND 3) OR
+			    (ts.slotOrder = 1 AND HOUR(n.timestamp) BETWEEN 4 AND 7) OR
+			    (ts.slotOrder = 2 AND HOUR(n.timestamp) BETWEEN 8 AND 11) OR
+			    (ts.slotOrder = 3 AND HOUR(n.timestamp) BETWEEN 12 AND 15) OR
+			    (ts.slotOrder = 4 AND HOUR(n.timestamp) BETWEEN 16 AND 19) OR
+			    (ts.slotOrder = 5 AND HOUR(n.timestamp) BETWEEN 20 AND 23)
+			)
+			GROUP BY ts.slotOrder, ts.timeSlot
+			ORDER BY ts.slotOrder
 			""", nativeQuery = true)
-	List<Object[]> getTimeSlotWiseUniqueHostCount();
+			List<Object[]> getTimeSlotWiseUniqueHostCount();
 
 	@Query(value = "SELECT event_type as eventType, COUNT(event_type) as count FROM network_dlp WHERE DATE(timestamp) = DATE(:date) GROUP BY event_type", nativeQuery = true)
 	List<UploadCountDTO> getUploadCountByDate(@Param("date") LocalDate date);
@@ -84,7 +101,44 @@ public interface NetworkDlpRepository extends JpaRepository<NetworkDlpEntity, Lo
 		    ORDER BY `timestamp` DESC
 		    """, nativeQuery = true)
 		List<Object[]> getNetworkincidentchannel1();
+
+		@Query(value = """
+		        SELECT branchname AS branchname,
+		               username AS username,
+		               event_type AS eventType,
+		               file_source_path AS fileSourcePath,
+		               timestamp AS timestamp
+		        FROM network_dlp_log
+		        """, nativeQuery = true)
+		List<Map<String, Object>> networkincident();
+
 	
+
+
+//		@Query("""
+//			       SELECT new com.velox.dto.NetworkDlpRequestDto(
+//			           n.branchname,
+//			           n.username,
+//			           n.eventType,
+//			           n.fileSourcePath,
+//			           n.timestamp
+//			       )
+//			       FROM NetworkDlpEntity n
+//			       """)
+//			List<NetworkDlpRequestDto> getPeripheralincident();
+		
+		@Query("""
+				SELECT new com.velox.dto.NetworkDlpRequestDto(
+				    n.branchName,
+				    n.username,
+				    n.eventType,
+				    n.fileSourcePath,
+				    n.timestamp
+				)
+				FROM NetworkDlpEntity n
+				WHERE n.eventType = :eventType
+				""")
+				List<NetworkDlpRequestDto> getFileUploadData(@Param("eventType") String eventType);
 	
 
 }

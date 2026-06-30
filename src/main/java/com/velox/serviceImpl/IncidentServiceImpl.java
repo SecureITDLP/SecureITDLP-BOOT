@@ -29,27 +29,27 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     public IncidentByChannelDto getIncidentCountsByChannel() {
-        long emailCount = emailRepo.count();
+        long emailIncident = emailRepo.count();
         // Network Upload – adjust the event type string to match your actual data
-        long networkUploadCount = networkDlpRepo.countByEventType("Network Upload");
+        long networkIncident = networkDlpRepo.countByEventType("Network Upload");
 
-        long printerCount = printerRepo.count();
-        long clipboardCount = clipboardRepo.count();
-        long monitoringFolderCount = monitoringFolderRepo.count();
+        long printerIncident = printerRepo.count();
+        long clipboardIncident = clipboardRepo.count();
+        long driveIncident = monitoringFolderRepo.count();
 
         // Peripheral count = sum of DVD Burn + USB Transfer
         List<PeripheralCountDto> peripheralList = networkDlpRepo.countPeripheralEventTypes();
-        long peripheralCount = peripheralList.stream()
+        long peripheralIncident = peripheralList.stream()
                 .mapToLong(PeripheralCountDto::getCount)
                 .sum();
 
         return new IncidentByChannelDto(
-                emailCount,
-                networkUploadCount,
-                printerCount,
-                clipboardCount,
-                monitoringFolderCount,
-                peripheralCount
+        		emailIncident,
+        		networkIncident,
+        		printerIncident,
+        		clipboardIncident,
+        		driveIncident,
+        		peripheralIncident
         );
     }
 }

@@ -1,37 +1,79 @@
 package com.velox.dto;
 
 public class IncidentByChannelDto {
-    private long emailCount;
-    private long networkUploadCount;
-    private long printerCount;
-    private long clipboardCount;
-    private long monitoringFolderCount;
-    private long peripheralCount; // USB Transfer + DVD Burn
 
-    // Constructors, getters, setters
-    public IncidentByChannelDto() {}
+    private long emailIncident;
+    private long networkIncident;
+    private long printerIncident;
+    private long clipboardIncident;
+    private long driveIncident;
+    private long peripheralIncident;
+    
+	public IncidentByChannelDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public IncidentByChannelDto(long emailCount, long networkUploadCount, long printerCount,
-                                long clipboardCount, long monitoringFolderCount, long peripheralCount) {
-        this.emailCount = emailCount;
-        this.networkUploadCount = networkUploadCount;
-        this.printerCount = printerCount;
-        this.clipboardCount = clipboardCount;
-        this.monitoringFolderCount = monitoringFolderCount;
-        this.peripheralCount = peripheralCount;
-    }
+	public IncidentByChannelDto(long emailIncident, long networkIncident, long printerIncident, long clipboardIncident,
+			long driveIncident, long peripheralIncident) {
+		super();
+		this.emailIncident = emailIncident;
+		this.networkIncident = networkIncident;
+		this.printerIncident = printerIncident;
+		this.clipboardIncident = clipboardIncident;
+		this.driveIncident = driveIncident;
+		this.peripheralIncident = peripheralIncident;
+	}
 
-    // getters and setters
-    public long getEmailCount() { return emailCount; }
-    public void setEmailCount(long emailCount) { this.emailCount = emailCount; }
-    public long getNetworkUploadCount() { return networkUploadCount; }
-    public void setNetworkUploadCount(long networkUploadCount) { this.networkUploadCount = networkUploadCount; }
-    public long getPrinterCount() { return printerCount; }
-    public void setPrinterCount(long printerCount) { this.printerCount = printerCount; }
-    public long getClipboardCount() { return clipboardCount; }
-    public void setClipboardCount(long clipboardCount) { this.clipboardCount = clipboardCount; }
-    public long getMonitoringFolderCount() { return monitoringFolderCount; }
-    public void setMonitoringFolderCount(long monitoringFolderCount) { this.monitoringFolderCount = monitoringFolderCount; }
-    public long getPeripheralCount() { return peripheralCount; }
-    public void setPeripheralCount(long peripheralCount) { this.peripheralCount = peripheralCount; }
+	public long getEmailIncident() {
+		return emailIncident;
+	}
+
+	public void setEmailIncident(long emailIncident) {
+		this.emailIncident = emailIncident;
+	}
+
+	public long getNetworkIncident() {
+		return networkIncident;
+	}
+
+	public void setNetworkIncident(long networkIncident) {
+		this.networkIncident = networkIncident;
+	}
+
+	public long getPrinterIncident() {
+		return printerIncident;
+	}
+
+	public void setPrinterIncident(long printerIncident) {
+		this.printerIncident = printerIncident;
+	}
+
+	public long getClipboardIncident() {
+		return clipboardIncident;
+	}
+
+	public void setClipboardIncident(long clipboardIncident) {
+		this.clipboardIncident = clipboardIncident;
+	}
+
+	public long getDriveIncident() {
+		return driveIncident;
+	}
+
+	public void setDriveIncident(long driveIncident) {
+		this.driveIncident = driveIncident;
+	}
+
+	public long getPeripheralIncident() {
+		return peripheralIncident;
+	}
+
+	public void setPeripheralIncident(long peripheralIncident) {
+		this.peripheralIncident = peripheralIncident;
+	}
+	
+   
+	
+    // Getters and Setters
 }

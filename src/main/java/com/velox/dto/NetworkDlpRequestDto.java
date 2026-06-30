@@ -4,7 +4,17 @@ import java.time.LocalDateTime;
 
 public class NetworkDlpRequestDto {
 
-    private String branchname;
+    public NetworkDlpRequestDto(String branchname, String username, String eventType, String fileSourcePath,
+			LocalDateTime timestamp) {
+		super();
+		this.branchname = branchname;
+		this.username = username;
+		this.eventType = eventType;
+		this.fileSourcePath = fileSourcePath;
+		this.timestamp = timestamp;
+	}
+
+	private String branchname;
     private String username;
     private String eventType;
     private String fileSourcePath;

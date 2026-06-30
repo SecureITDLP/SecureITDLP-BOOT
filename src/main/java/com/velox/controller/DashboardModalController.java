@@ -1,7 +1,9 @@
 package com.velox.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import com.velox.dto.ClipboardModalDto;
 import com.velox.dto.DashboardModalDto;
 import com.velox.dto.EmailModalDto;
 import com.velox.dto.ExtensionRequestDto;
+import com.velox.dto.IncidentByChannelDto;
 import com.velox.dto.LoginResponse;
 import com.velox.service.DashboardModalService;
 import com.velox.service.NetworkDlpService;
@@ -38,9 +41,9 @@ public class DashboardModalController {
 
 	@PostMapping("/ExtensionModalData/{request}")
 	public ResponseEntity<ApiResponse<List<DashboardModalDto>>> ExtensionModalData(@PathVariable String request) {
+		logger.info("api call ");
 
 		List<DashboardModalDto> extBasedData = dashboardmodalservice.getDashboardData(request);
-
 		try {
 			ApiResponse<List<DashboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
 					LocalDateTime.now(), extBasedData);
@@ -72,50 +75,67 @@ public class DashboardModalController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 		}
 	}
-	
-	@PostMapping("/ClipboardModalData/{Date}")
-	public ResponseEntity<ApiResponse<List<ClipboardModalDto>>> ClipboardModalData(@PathVariable String Date){
-		List<ClipboardModalDto> dateBasedData = dashboardmodalservice.getClipboarddata(Date);
-		
-		try {
-			ApiResponse<List<ClipboardModalDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
-					LocalDateTime.now(), dateBasedData);
-			logger.info("ClipboardModalData Fetched");
-			return ResponseEntity.ok(response);
-		}
-		
-		 catch (Exception ex) {
-				ApiResponse<List<ClipboardModalDto>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
-						LocalDateTime.now(), null);
-				logger.error(ex.getMessage());
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-			}
 
-	}
-	
-	@PostMapping("/IncidentbyChannelModal/{Channel}")
-	
-	public ResponseEntity<ApiResponse<List<?>>> IncidentbyChannelModal(@PathVariable String Channel){
-		List<?> dateBasedData = dashboardmodalservice.getIncidentbyChannel(Channel);
-		
+	@PostMapping("/ClipboardModalData/{date}")
+	public ResponseEntity<ApiResponse<List<?>>> ClipboardModalData(@PathVariable String date) {
+
+		System.out.println("Date from URL : " + date);
 		try {
+			List<?> data = dashboardmodalservice.getClipboardData(date);
 			ApiResponse<List<?>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
-					LocalDateTime.now(), dateBasedData);
+					LocalDateTime.now(), data);
+			return ResponseEntity.ok(response);
+
+		} catch (Exception ex) {
+			ApiResponse<List<?>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+					LocalDateTime.now(), null);
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+	}
+
+	@PostMapping("/IncidentbyChannelModal/{channel}")
+	public ResponseEntity<ApiResponse<List<?>>> IncidentModalData(@PathVariable String channel) {
+
+		try {
+			List<?> data = dashboardmodalservice.getIncidentbyChannel(channel);
+
+			ApiResponse<List<?>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), data);
+
 			logger.info("IncidentbyChannelModalData Fetched");
 			return ResponseEntity.ok(response);
-		}
-		
-		 catch (Exception ex) {
-				ApiResponse<List<?>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
-						LocalDateTime.now(), null);
-				logger.error(ex.getMessage());
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-			}
-		
-		
 
+		} catch (Exception ex) {
+
+			ApiResponse<List<?>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+					LocalDateTime.now(), null);
+
+			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
 	}
-	
-	
+
+	@PostMapping("/FileUploadModalData/{file}")
+	public ResponseEntity<ApiResponse<List<?>>> FileUploadData(@PathVariable String file) {
+
+		try {
+			List<?> data = dashboardmodalservice.getFileUploadData(file);
+
+			ApiResponse<List<?>> response = new ApiResponse<>(true, "FETCH_SUCCESS", "Data Fetched",
+					LocalDateTime.now(), data);
+
+			logger.info("FileUploadData Fetched");
+			return ResponseEntity.ok(response);
+
+		} catch (Exception ex) {
+
+			ApiResponse<List<?>> response = new ApiResponse<>(false, "FETCH_FAILED", ex.getMessage(),
+					LocalDateTime.now(), null);
+
+			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+	}
 
 }

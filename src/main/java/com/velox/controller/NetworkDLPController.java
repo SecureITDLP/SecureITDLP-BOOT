@@ -92,33 +92,14 @@ public class NetworkDLPController {
 	@GetMapping("/timeSlotHostCounts")
 	public ResponseEntity<ApiResponse<List<TimeSlotHostCountDto>>> getTimeSlotHostCounts() {
 
-		try {
-
-
-//			List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
-//
-//			ApiResponse<List<TimeSlotHostCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
-//					"Time slot wise unique host count fetched successfully", LocalDateTime.now(), result);
-//
-//			return ResponseEntity.ok(response);
-//
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//
-//			ApiResponse<List<TimeSlotHostCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
-//					e.getMessage(), LocalDateTime.now(), null);
-//
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-//		}
-
-			List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
+		try {List<TimeSlotHostCountDto> result = service.getTimeSlotWiseUniqueHostCount();
 			ApiResponse<List<TimeSlotHostCountDto>> response = new ApiResponse<>(true, "FETCH_SUCCESS",
 					"Time slot fetched successfully", LocalDateTime.now(), result);
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
 
-			ApiResponse<List<TimeSlotHostCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",e.getMessage(), LocalDateTime.now(), null);
+			ApiResponse<List<TimeSlotHostCountDto>> errorResponse = new ApiResponse<>(false, "FETCH_FAILED",
+					e.getMessage(), LocalDateTime.now(), null);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 		}
 	}

@@ -23,12 +23,33 @@ public interface ClipboardControlRepository extends JpaRepository<ClipboardContr
 			+ "ORDER BY d.date", nativeQuery = true)
 	List<Object[]> getLastSevenDaysIncidents();
 
-	@Query("SELECT new com.velox.dto.ClipboardModalDto(" + "c.application, c.branch, c.hostname, c.keyword) "
-			+ "FROM ClipboardControl c " + "WHERE FUNCTION('DATE_FORMAT', c.createdAt, '%Y-%m-%d') = :date")
-	List<ClipboardModalDto> getClipboardData(@Param("date") String date);
+//	@Query("SELECT new com.velox.dto.ClipboardModalDto(" + "c.application, c.branch, c.hostname, c.keyword) "
+//			+ "FROM ClipboardControl c " + "WHERE FUNCTION('DATE_FORMAT', c.createdAt, '%Y-%m-%d') = :date")
+//	List<ClipboardModalDto> getClipboardData(@Param("date") String date);
+
+	@Query("SELECT c.branch, c.hostname, c.ipaddress, c.keyword, c.createdAt " + "FROM ClipboardControl c "
+			+ "ORDER BY c.createdAt DESC")
+	List<Object[]> getClipboardincidentchannel();
+
+	@Query("SELECT new com.velox.dto.ClipboardModalDto("
+			+ "c.application, c.branch, c.hostname, c.keyword) " + "FROM ClipboardControl c "
+			+ "WHERE FUNCTION('DATE_FORMAT', c.createdAt, '%Y-%m-%d') = :date")
+	List<?> getClipboardData(@Param("date") String date);
+
+//
+//		    @Query("SELECT new com.velox.dto.ClipboardModalDto(" +
+//		           "c.application, c.branch, c.hostname, c.keyword) " +
+//		           "FROM ClipboardControl c " +
+//		           "WHERE FUNCTION('DATE_FORMAT', c.createdAt, '%Y-%m-%d') = :date")
+//		
+
 	
-	@Query("SELECT c.branch, c.hostname, c.ipaddress, c.keyword, c.createdAt " +
-		       "FROM ClipboardControl c " +
-		       "ORDER BY c.createdAt DESC")
-		List<Object[]> getClipboardincidentchannel();
+	@Query(value = """
+		       SELECT hostname,
+		              ipaddress,
+		              keyword,
+		              branch
+		       FROM clipboard_control_log
+		       """, nativeQuery = true)
+		List<Object[]> clipboardincident();
 }

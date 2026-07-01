@@ -1,5 +1,7 @@
 package com.velox.controller;
 
+import com.velox.dto.ModeAccessCountDto;
+import com.velox.dto.RestrictExternalDeviceDto;
 import com.velox.service.UsbProtectionService;
 import com.velox.utils.ApiResponse;
 import org.slf4j.Logger;
@@ -41,6 +43,40 @@ public class UsbProtectionController {
 				LocalDateTime.now(), devices);
 
 		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/modeAccessCount")
+	public ResponseEntity<ApiResponse<ModeAccessCountDto>> getModeAccessCount() {
+
+	    ModeAccessCountDto data = service.getModeAccessCounts();
+
+	    ApiResponse<ModeAccessCountDto> response = new ApiResponse<>(
+	            true,
+	            "FETCH_SUCCESS",
+	            "Mode access count fetched successfully",
+	            LocalDateTime.now(),
+	            data
+	    );
+
+	    return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/deviceDetails")
+	public ResponseEntity<ApiResponse<List<RestrictExternalDeviceDto>>> getDeviceDetails() {
+
+	    List<RestrictExternalDeviceDto> data =
+	            service.getAllRestrictedDevices();
+
+	    ApiResponse<List<RestrictExternalDeviceDto>> response =
+	            new ApiResponse<>(
+	                    true,
+	                    "FETCH_SUCCESS",
+	                    "Device details fetched successfully",
+	                    LocalDateTime.now(),
+	                    data
+	            );
+
+	    return ResponseEntity.ok(response);
 	}
 
 }

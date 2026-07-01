@@ -25,5 +25,11 @@ public interface AllIpAddressRepository extends JpaRepository<AllIpAddress, Long
 	
 	@Query("SELECT new com.velox.dto.DeviceDetailsDto(a.branchName,a.ipAddress,a.deviceIp, a.userName,a.agentStatus,a.agentCommunication,a.zoneName,a.fixedUser)FROM AllIpAddress a")
 	List<DeviceDetailsDto> getAllDevices();
+	
+	@Query("SELECT DISTINCT a.branchName FROM AllIpAddress a WHERE a.branchName IS NOT NULL AND a.branchName != ''")
+	List<String> findDistinctBranchNames();
+	
+	@Query("SELECT a.branchName FROM AllIpAddress a WHERE a.branchName IS NOT NULL AND a.branchName != ''")
+	List<String> findAllBranchNames();
     
 }

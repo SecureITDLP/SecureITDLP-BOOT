@@ -28,5 +28,15 @@ public class DeviceManagerServicImpl implements DeviceManager {
 	    public List<DeviceDetailsDto> getAllDevices() {
 			return repository.getAllDevices();
 	    }
+	  
+	  @Override
+		public List<String> getAllBranchNames() {
+			return repository.findAllBranchNames();
+		}
+		
+		@Override
+		public List<String> getDistinctBranchNames() {
+			return repository.findDistinctBranchNames();
+		}
 
 }

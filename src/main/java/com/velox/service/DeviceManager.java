@@ -10,4 +10,8 @@ public interface DeviceManager {
 	AgentStatusCountDto getAgentStatusCounts();
 
 	List<DeviceDetailsDto> getAllDevices();
+
+	List<String> getAllBranchNames();
+
+	List<String> getDistinctBranchNames();
 }

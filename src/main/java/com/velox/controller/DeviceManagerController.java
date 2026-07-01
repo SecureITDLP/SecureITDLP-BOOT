@@ -65,4 +65,88 @@ public class DeviceManagerController {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 			}
 		}
+	 
+	 
+	// NEW ENDPOINTS FOR BRANCH NAMES
+	
+		@GetMapping("/allBranchNames")
+		public ResponseEntity<ApiResponse<List<String>>> getAllBranchNames() {
+			try {
+				List<String> branchNames = deviceManager.getAllBranchNames();
+				ApiResponse<List<String>> response = new ApiResponse<>(
+					true, 
+					"FETCH_SUCCESS", 
+					"All branch names fetched successfully", 
+					LocalDateTime.now(), 
+					branchNames
+				);
+				logger.info("All branch names fetched successfully, count: {}", branchNames.size());
+				return ResponseEntity.ok(response);
+			} catch (Exception ex) {
+				ApiResponse<List<String>> response = new ApiResponse<>(
+					false, 
+					"FETCH_FAILED", 
+					ex.getMessage(), 
+					LocalDateTime.now(), 
+					null
+				);
+				logger.error("Failed to fetch branch names", ex);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+		}
+		
+		
+		@GetMapping("/distinctBranchNames")
+		public ResponseEntity<ApiResponse<List<String>>> getDistinctBranchNames() {
+			try {
+				List<String> distinctBranchNames = deviceManager.getDistinctBranchNames();
+				ApiResponse<List<String>> response = new ApiResponse<>(
+					true, 
+					"FETCH_SUCCESS", 
+					"Distinct branch names fetched successfully", 
+					LocalDateTime.now(), 
+					distinctBranchNames
+				);
+				logger.info("Distinct branch names fetched successfully, count: {}", distinctBranchNames.size());
+				return ResponseEntity.ok(response);
+			} catch (Exception ex) {
+				ApiResponse<List<String>> response = new ApiResponse<>(
+					false, 
+					"FETCH_FAILED", 
+					ex.getMessage(), 
+					LocalDateTime.now(), 
+					null
+				);
+				logger.error("Failed to fetch distinct branch names", ex);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+		}
+		
+		
+		@GetMapping("/branchNamesCount")
+		public ResponseEntity<ApiResponse<Long>> getBranchNamesCount() {
+			try {
+				List<String> branchNames = deviceManager.getAllBranchNames();
+				long count = branchNames.size();
+				ApiResponse<Long> response = new ApiResponse<>(
+					true, 
+					"FETCH_SUCCESS", 
+					"Branch names count fetched successfully", 
+					LocalDateTime.now(), 
+					count
+				);
+				logger.info("Total branch names count: {}", count);
+				return ResponseEntity.ok(response);
+			} catch (Exception ex) {
+				ApiResponse<Long> response = new ApiResponse<>(
+					false, 
+					"FETCH_FAILED", 
+					ex.getMessage(), 
+					LocalDateTime.now(), 
+					null
+				);
+				logger.error("Failed to fetch branch names count", ex);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+		}
 }

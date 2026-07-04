@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.velox.dto.PrinterMonitoringDTO;
 import com.velox.model.PrinterMonitoring;
 import com.velox.service.PrinterMonitoringService;
 
@@ -22,8 +23,8 @@ public class PrinterMonitoringController {
     
     // Endpoint 1: Get ALL records
     @GetMapping("/all")
-    public ResponseEntity<List<PrinterMonitoring>> getAllRecords() {
-        List<PrinterMonitoring> records = printerMonitoringService.getAllRecords();
+    public ResponseEntity<List<PrinterMonitoringDTO>> getAllRecords() {
+        List<PrinterMonitoringDTO> records = printerMonitoringService.getAllRecords();
         
         if (records.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -33,8 +34,8 @@ public class PrinterMonitoringController {
     
     // Endpoint 2: Get records where ALLOW_PREVENT = "allow prevent" (hardcoded)
     @GetMapping("/allowpreventrecords")
-    public ResponseEntity<List<PrinterMonitoring>> getAllowPreventRecords() {
-        List<PrinterMonitoring> records = printerMonitoringService.getRecordsByAllowPrevent("allow prevent");
+    public ResponseEntity<List<PrinterMonitoringDTO>> getAllowPreventRecords() {
+        List<PrinterMonitoringDTO> records = printerMonitoringService.getRecordsByAllowPrevent("allow prevent");
         
         if (records.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -44,10 +45,10 @@ public class PrinterMonitoringController {
     
     // Endpoint 3: Get records by dynamic allowPrevent value
     @GetMapping("/byallowprevent")
-    public ResponseEntity<List<PrinterMonitoring>> getRecordsByAllowPrevent(
+    public ResponseEntity<List<PrinterMonitoringDTO>> getRecordsByAllowPrevent(
             @RequestParam String allowPrevent) {
         
-        List<PrinterMonitoring> records = printerMonitoringService.getRecordsByAllowPrevent(allowPrevent);
+        List<PrinterMonitoringDTO> records = printerMonitoringService.getRecordsByAllowPrevent(allowPrevent);
         
         if (records.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -57,10 +58,10 @@ public class PrinterMonitoringController {
     
     // Endpoint 4: Combined - Get ALL or filtered by allowPrevent
     @GetMapping("/records")
-    public ResponseEntity<List<PrinterMonitoring>> getRecords(
+    public ResponseEntity<List<PrinterMonitoringDTO>> getRecords(
             @RequestParam(required = false) String allowPrevent) {
         
-        List<PrinterMonitoring> records;
+        List<PrinterMonitoringDTO> records;
         
         if (allowPrevent != null && !allowPrevent.isEmpty()) {
             // If allowPrevent parameter is provided, filter by it

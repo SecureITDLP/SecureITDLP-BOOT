@@ -12,13 +12,10 @@ import java.util.List;
 @Repository
 public interface PrinterMonitoringRepository extends JpaRepository<PrinterMonitoring, Integer> {
     
+    // Get records where ALLOW_PREVENT = 'Allow'
+    @Query("SELECT p FROM PrinterMonitoring p WHERE LOWER(p.allowPrevent) = LOWER(:allowPrevent)")
+    List<PrinterMonitoring> findByAllowPreventIgnoreCase(@Param("allowPrevent") String allowPrevent);
+    
     // Get all records
     List<PrinterMonitoring> findAll();
-    
-    // Get records where ALLOW_PREVENT = "allow prevent"
-    List<PrinterMonitoring> findByAllowPrevent(String allowPrevent);
-    
-    // Get records where ALLOW_PREVENT = "allow prevent" using JPQL
-    @Query("SELECT p FROM PrinterMonitoring p WHERE p.allowPrevent = :allowPrevent")
-    List<PrinterMonitoring> findRecordsByAllowPrevent(@Param("allowPrevent") String allowPrevent);
 }

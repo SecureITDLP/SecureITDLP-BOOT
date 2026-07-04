@@ -1,13 +1,9 @@
 package com.velox.service;
 
+import com.velox.dto.PrinterMonitoringDTO;
 import java.util.List;
 
-import com.velox.model.PrinterMonitoring;
-
 public interface PrinterMonitoringService {
-    // Get all records
-    List<PrinterMonitoring> getAllRecords();
-    
-    // Get records by allow prevent
-    List<PrinterMonitoring> getRecordsByAllowPrevent(String allowPrevent);
+    List<PrinterMonitoringDTO> getRecordsByAllowPrevent(String allowPrevent);
+    List<PrinterMonitoringDTO> getAllRecords();
 }

@@ -37,14 +37,14 @@ public class IncidentController {
                     counts
             );
 
-            return ResponseEntity.ok(response);
+     return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.err.println("ERROR: Failed to fetch incident counts - " + e.getMessage());
+     System.err.println("ERROR: Failed to fetch incident counts - " + e.getMessage());
             e.printStackTrace();
 
             ApiResponse<IncidentByChannelDto> errorResponse = new ApiResponse<>(
-                    false,
+    false,
                     "FETCH_FAILED",
                     "Unable to retrieve incident counts. Please try again later.",
                     LocalDateTime.now(),
